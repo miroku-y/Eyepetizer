@@ -1,0 +1,13 @@
+<template>
+  <view>
+    我的关注
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Follow extends wepy.page {
+  config = {
+    navigationBarTitleText: '关注'
+  };
+}
+</script>

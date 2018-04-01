@@ -1,0 +1,88 @@
+<style>
+.content {
+  background-color: #eee;
+  text-align: center;
+}
+.videoBox {
+  /* display: flex;
+  justify-content: center;
+  flex-direction: colum; */
+  width: 90%;
+  margin: 0 auto;
+}
+.video {
+  border-radius: 6px;
+  margin: 0 auto;
+  height: 35vh;
+  width: 100%;
+}
+.headers{
+  height:35vh;
+  margin-bottom:2vh;
+}
+.headers_image{
+  height:100%;
+  width:100%;
+}
+</style>
+<template>
+  <view class="content">
+    <block wx:if="{{isClassify}}">
+      <view  class="headers">
+        <image src="{{headers.img}}" mode="aspectFill" class="headers_image"></image>
+      </view>
+    </block>
+    <block wx:else>
+      {{null}}
+    </block>
+    <view class="videoBox" wx:for="{{contents.itemList}}" wx:key="{{item.data.id}}" wx:for-item="item">
+      <video class="video" src="{{item.data.playUrl}}"></video>
+      <block>{{item.data.title}}</block>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import { getContent } from '../api/api';
+
+export default class tabContent extends wepy.page {
+  data = {
+    contents: [],
+    isClassify:false,
+    headers:{
+      img:''
+    },
+  };
+  async getContent(selectedId) {
+    let me = this;
+    const json = await getContent({ query: {} });
+    //由于数据给的有问题，这边要判断一下
+    me.contents =
+      json.data.itemList[
+        selectedId === 2 ? 5 : selectedId === 5 ? 2 : selectedId - 2
+      ].data;
+    // console.log(me.contents, '切换内容');
+    me.headers.img = me.contents.itemList[0].data.cover.feed
+    console.log(me.isClassify,me.headers.img, '切换内容');
+    me.$apply();
+  }
+  methods = {
+    requestContent(paramse) {
+      console.log(`当前选中的`,paramse);
+      const {selectedId} = paramse
+      //tab只有进行切换，就好先清空下面的list
+       this.contents = [];
+       this.isClassify = paramse.classify;
+      if (selectedId !==2||selectedId!==3||selectedId!==4||selectedId!==5){
+        this.getContent(selectedId);
+      }else{
+         return
+      }
+    }
+  };
+
+  onLoad() {
+    // console.log('tab内容模板加载了');
+  }
+}
+</script>
