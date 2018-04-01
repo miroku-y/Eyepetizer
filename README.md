@@ -52,4 +52,4 @@ http://mp.weixin.qq.com/debug/wxadoc/dev/
      └── wxRequest.js       //ajax请求
  ```    
  ## Demo 截图
- ![](https://github.com/yangdongMC/Eyepetizer/src/assets/wechat1.pn)
+ ![](https://github.com/yangdongMC/Eyepetizer/blob/master/src/assets/wechat1.pn)
