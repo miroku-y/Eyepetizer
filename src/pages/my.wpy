@@ -1,10 +1,55 @@
+<style>
+  .container{
+    width:80%;
+    margin:0 auto;
+
+  }
+  .form{
+    width:80%;
+    margin:0 auto;
+  }
+  .form-item{
+    margin:4vh 0;
+    width:100%;
+  }
+</style>
 <template>
   <view>
     个人中心
   </view>
-  <view>
-    <button>注册</button>
-  </view>
+  <form bindsubmit="submitFun">
+    <view class="block container">
+      <view class="form-item">
+        <view>姓名：</view>
+        <input type="text" placeholder="请输入你的姓名" name="username" value=""/>
+      </view>
+      <view class="form-item">
+        <view>性别：</view>
+        <br>
+        <radio-group name="ganner">
+          <label><radio value="male">男</radio></label>
+          <label><radio value="female">女</radio></label>
+        </radio-group>
+      </view>
+      <view class="form-item">
+        <view>电话号码：</view>
+        <view class="input">
+          <input type="text" name="tel" value="" placeholder="请输入电话号码"/>
+        </view>
+      </view>
+      <view class="form-item">
+        <view>checkbox</view>
+        <br>
+        <checkbox-group name="checkbox">
+          <label><checkbox value="checkbox1">checkbox1</checkbox></label>
+          <label><checkbox value="checkbox2">checkbox2</checkbox></label>
+        </checkbox-group>
+      </view>
+      <view class="form-item btn_box">
+        <button class="button type_red" style="width:50%;" formType="submit">完成</button>
+      </view>
+    </view>
+  </form>
 </template>
 <script>
 import wepy from 'wepy';
@@ -12,5 +57,10 @@ export default class My extends wepy.page {
   config = {
     navigationBarTitleText: '个人中心'
   };
+  methods = {
+    submitFun(e){
+      console.log(e);
+    }
+  }
 }
 </script>
