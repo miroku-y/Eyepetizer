@@ -2,6 +2,9 @@
   <view>
     个人中心
   </view>
+  <view>
+    <button>注册</button>
+  </view>
 </template>
 <script>
 import wepy from 'wepy';
