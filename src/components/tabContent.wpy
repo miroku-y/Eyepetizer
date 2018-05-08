@@ -29,6 +29,36 @@
   height:40px;
   border-radius:50%;
 }
+.category{
+  display:flex;
+  align-items:center;
+  margin:10px 0;
+
+}
+.text_title{
+  font-size:13px;
+  text-align:left;
+
+
+}
+.text_name,.text_description{
+  font-size:11px;
+}
+.text_common{
+  text-align:left;
+margin-left:2vw;
+
+}
+.text_description{
+  text-align:left;
+  margin-bottom:10px;
+
+}
+.item_content{
+  margin:10px 0;
+border-bottom:1px solid #aaa;
+
+}
 </style>
 <template>
   <view class="content">
@@ -42,12 +72,20 @@
     </block>
     <view class="videoBox" wx:for="{{contents}}" wx:key="{{item.data.header.id}}" wx:for-item="item">
       <video class="video" src="{{item.data.content.data.playUrl}}"></video>
-      <block>
-        <view>
+      <view class="item_content">
+        <view class="category">
           <image class="small_img" src="{{item.data.content.data.author.icon}}" mode="aspectFill"></image>
-          <view>{{item.data.content.data.title}}</view>
+          <view class="text_common">
+            <view class="text_title">{{item.data.content.data.title}}</view>
+            <view class="text_name">
+              {{item.data.content.data.author.name}} / #{{item.data.content.data.category}}
+            </view>
+          </view>
         </view>
-      </block>
+        <view class="text_description">
+          {{item.data.content.data.description}}
+        </view>
+      </view>
     </view>
   </view>
 </template>
