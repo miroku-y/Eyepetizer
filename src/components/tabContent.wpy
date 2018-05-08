@@ -45,6 +45,7 @@
       <block>
         <view>
           <image class="small_img" src="{{item.data.content.data.author.icon}}" mode="aspectFill"></image>
+          <view>{{item.data.content.data.title}}</view>
         </view>
       </block>
     </view>
