@@ -24,6 +24,11 @@
   height:100%;
   width:100%;
 }
+.small_img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+}
 </style>
 <template>
   <view class="content">
@@ -35,9 +40,13 @@
     <block wx:else>
       {{null}}
     </block>
-    <view class="videoBox" wx:for="{{contents.itemList}}" wx:key="{{item.data.id}}" wx:for-item="item">
-      <video class="video" src="{{item.data.playUrl}}"></video>
-      <block>{{item.data.title}}</block>
+    <view class="videoBox" wx:for="{{contents}}" wx:key="{{item.data.header.id}}" wx:for-item="item">
+      <video class="video" src="{{item.data.content.data.playUrl}}"></video>
+      <block>
+        <view>
+          <image class="small_img" src="{{item.data.content.data.author.icon}}" mode="aspectFill"></image>
+        </view>
+      </block>
     </view>
   </view>
 </template>
@@ -55,15 +64,19 @@ export default class tabContent extends wepy.page {
   };
   async getContent(selectedId) {
     let me = this;
-    const json = await getContent({ query: {} });
+    const json = await getContent({ query: {"selectedId":selectedId} });
     //由于数据给的有问题，这边要判断一下
-    me.contents =
-      json.data.itemList[
-        selectedId === 2 ? 5 : selectedId === 5 ? 2 : selectedId - 2
-      ].data;
-    // console.log(me.contents, '切换内容');
-    me.headers.img = me.contents.itemList[0].data.cover.feed
-    console.log(me.isClassify,me.headers.img, '切换内容');
+    // me.contents =
+    //   json.data.itemList[
+    //     selectedId === 2 ? 5 : selectedId === 5 ? 2 : selectedId - 2
+    //   ].data;
+    for(var key in json.data.itemList){
+      if(json.data.itemList[key].type == "followCard"){
+        me.contents.push(json.data.itemList[key])
+      }
+    }
+    console.log( me.contents, me.contents[0],'切换内容');
+    me.headers.img =  me.contents[0].data.content.data.author.icon
     me.$apply();
   }
   methods = {

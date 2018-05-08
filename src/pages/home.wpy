@@ -29,7 +29,7 @@
     <block wx:if="{{tab2.selectedId==1}}">
       <scroll-view scroll-y scroll-with-animation="true">
         <view class="children">
-          <navigator hover-class="none" class="child" wx:for="{{userInfo}}" wx:for-item="item" wx:key="index" url="/pages/classify?title={{item.data.title}}">
+          <navigator hover-class="none" class="child" wx:for="{{userInfo}}" wx:for-item="item" wx:key="index" url="/pages/classify?title={{item.data.title}}&id={{item.data.id}}">
           <!--<navigator hover-class="none" class="child" wx:for="{{userInfo}}" wx:for-item="item" wx:key="index" @tap="jump({{item.data.title}})">-->
             <image class="child_image" src="{{item.data.image}}"></image>
             <view>{{item.data.title}}</view>

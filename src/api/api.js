@@ -9,7 +9,11 @@ const allCatetory = paramse =>
 
 //获取tab切换的内容
 const getContent = paramse =>
-  wxRequest(paramse, 'http://baobab.kaiyanapp.com/api/v4/discovery/category');
+  wxRequest(
+    paramse,
+    'http://baobab.kaiyanapp.com/api/v5/index/tab/category/' +
+      paramse.query.selectedId
+  );
 module.exports = {
   allCatetory,
   getContent

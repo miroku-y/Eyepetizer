@@ -43,8 +43,7 @@ export default class classify extends wepy.page {
   onLoad(options) {
     this.target = options.title.slice(1,options.title.length);
     // this.getContent(menu[this.target]);
-    console.log(menu, this.target,'切换内容');
-    this.$invoke('TabContent', 'requestContent', {"selectedId":menu[this.target],"classify":true});
+    this.$invoke('TabContent', 'requestContent', {"selectedId":options.id,"classify":true});
   }
 }
 </script>
