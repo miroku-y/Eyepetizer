@@ -1,0 +1,29 @@
+<style lang="less">
+.mylist:odd {
+  color: red;
+}
+.mylist:even {
+  color: green;
+}
+</style>
+<template>
+    <view wx:for-items="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+        <image src="{{item.data.image}}"></image>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+
+export default class Imgs extends wepy.component {
+  data = {
+    list: []
+  };
+
+  events = {};
+
+  methods = {};
+
+  onLoad() {}
+}
+</script>

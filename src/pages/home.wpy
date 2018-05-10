@@ -1,0 +1,130 @@
+<style>
+.child_image {
+  width: 100%;
+  height: 100px;
+  border-radius: 6px;
+}
+.child {
+  width: 47%;
+  padding-bottom: 8vh;
+}
+.children {
+  display: flex;
+  overflow: hidden;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 2vh;
+}
+</style>
+<template>
+  <view>
+    <view>
+      <zanTab2 :tab.sync="tab2" componentId="tab2"></zanTab2>
+    </view>
+    <block wx:if="{{tab2.selectedId==1}}">
+      <scroll-view scroll-y scroll-with-animation="true">
+        <view class="children">
+          <navigator hover-class="none" class="child" wx:for="{{userInfo}}" wx:for-item="item" wx:key="index" url="/pages/classify?title={{item.data.title}}&id={{item.data.id}}">
+          <!--<navigator hover-class="none" class="child" wx:for="{{userInfo}}" wx:for-item="item" wx:key="index" @tap="jump({{item.data.title}})">-->
+            <image class="child_image" src="{{item.data.image}}"></image>
+            <view>{{item.data.title}}</view>
+          </navigator>
+        </view>
+      </scroll-view>
+    </block>
+    <block wx:else>
+      <view>不是全部了,是{{tab2.list[tab2.selectedId-1]['title']}}</view>
+      <tabContent></tabContent>
+    </block>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import { connect } from 'wepy-redux';
+import zanTab from '../components/tab';
+import tabContent from '../components/tabContent';
+// import imgs from '../components/imgs';
+import wxRequest from '../utils/wxRequest';
+import { allCatetory } from '../api/api';
+
+export default class Home extends wepy.page {
+  config = {
+    navigationBarTitleText: '首页'
+  };
+  components = {
+    zanTab2: zanTab,
+    tabContent: tabContent
+  };
+  data = {
+    tab2: {
+      list: [
+        { title: '全部分类', id: '1' },
+        { title: '游戏', id: '2' },
+        { title: '音乐', id: '3' },
+        { title: '开胃', id: '4' },
+        { title: '旅行', id: '5' },
+        { title: '科普', id: '6' },
+        { title: '搞笑', id: '7' },
+        { title: '时尚', id: '8' },
+        { title: '运动', id: '9' },
+        { title: '动画', id: '10' },
+        { title: '广告', id: '11' },
+        { title: '精选', id: '12' },
+        { title: '生活', id: '13' },
+        { title: '剧情', id: '14' },
+        { title: '预告', id: '15' },
+        { title: '集锦', id: '16' },
+        { title: '记录', id: '17' },
+        { title: '创意', id: '18' },
+        { title: '萌宠', id: '19' },
+        { title: '综艺', id: '20' }
+      ],
+      selectedId: '1',
+      scroll: true,
+      height: 45
+    },
+    userInfo: [],
+    selectedId: ''
+  };
+  async info() {
+    let me = this;
+    const json = await allCatetory({ query: {} });
+    me.userInfo = json.data.itemList[6].data.itemList;
+    console.log(this.userInfo);
+    me.$apply();
+  }
+  events = {
+    zanTabChange(selectedId, event) {
+      let { componentId } = event.source;
+      //切换tab
+      this[componentId].selectedId = selectedId;
+      this.selectedId = selectedId;
+      // console.log(this);
+      //在home页面使用component
+      console.log(selectedId, `准备跳转`);
+      this.$invoke('tabContent', 'requestContent', {
+        selectedId: selectedId,
+        classify: false
+      });
+      // this.$apply();
+    }
+  };
+  methods = {
+    jump(title) {
+      wx.navigateTo({
+        url: `play?title=${title.slice(1, title.length)}`
+      });
+    }
+  };
+  onLoad() {
+    let me = this;
+    // console.log(me, wxRequest, '页面加载');
+    me.info();
+  }
+}
+</script>

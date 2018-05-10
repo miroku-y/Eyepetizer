@@ -1,0 +1,49 @@
+<style>
+
+</style>
+<template>
+  <!--<view class="content">
+    <view class="videoBox" wx:for="{{contents.itemList}}" wx:key="{{item.data.id}}" wx:for-item="item">
+      <video class="video" src="{{item.data.playUrl}}"></video>
+      <block>{{item.data.title}}</block>
+    </view>
+  </view>-->
+   <TabContent></TabContent>
+</template>
+<script>
+import wepy from 'wepy';
+import tabContent from '../components/tabContent';
+import { menu } from '../utils/emes';
+import { getContent } from '../api/api';
+export default class classify extends wepy.page {
+  config = {
+    navigationBarTitleText:'单个主页'
+  }
+  // props = {
+  //   target: ''
+  // };
+  data = {
+    contents: []
+  };
+  components = {
+    TabContent:tabContent
+  }
+  // async getContent(selectedId) {
+  //   let me = this;
+  //   const json = await getContent({ query: {} });
+  //   me.contents = [];
+  //   //由于数据给的有问题，这边要判断一下
+  //   me.contents =
+  //     json.data.itemList[
+  //       selectedId === 2 ? 5 : selectedId === 5 ? 2 : selectedId - 2
+  //     ].data;
+  //   // console.log(me.contents, '切换内容');
+  //   this.$apply();
+  // }
+  onLoad(options) {
+    this.target = options.title.slice(1,options.title.length);
+    // this.getContent(menu[this.target]);
+    this.$invoke('TabContent', 'requestContent', {"selectedId":options.id,"classify":true});
+  }
+}
+</script>
