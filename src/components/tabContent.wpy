@@ -49,14 +49,16 @@
 .text_description {
   text-align: left;
   overflow: hidden;
-  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
   -webkit-line-clamp: 2;
   margin-bottom: 5px;
+  /* height: 32px; */
 }
 .show_text_description {
   -webkit-line-clamp: 20;
+  /* height: initial; */
 }
 .item_content {
   margin: 10px 0;
@@ -67,6 +69,13 @@
   font-size: 11px;
   color: #999;
   margin: 0px 0 10px 0;
+}
+.controls {
+  z-index: 1000;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
 }
 </style>
 <template>
@@ -80,7 +89,11 @@
       {{null}}
     </block>
     <view class="videoBox" wx:for="{{contents}}" wx:key="{{item.data.header.id}}" wx:for-item="item">
-      <video class="video" src="{{item.data.content.data.playUrl?item.data.content.data.playUrl:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=849275536,3449568478&fm=27&gp=0.jpg'}}"></video>
+      <video class="video" controls objectFit="fill" autoplay="{{!item.showCoverImg}}" show-center-play-btn="{{false}}" custom-cache="{{false}}" src="{{item.data.content.data.playUrl?item.data.content.data.playUrl:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=849275536,3449568478&fm=27&gp=0.jpg'}}">
+        <cover-view class="controls" hidden="{{!item.showCoverImg}}" @tap='playVideo({{item.data.header.id}})'>
+            <cover-image class="imgcover" src="{{item.data.content.data.cover.homepage||item.data.content.data.cover.feed}}" mode="aspectFill"></cover-image>
+        </cover-view>
+      </video>
       <view class="item_content">
         <view class="category">
           <image class="small_img" src="{{item.data.content.data.author.icon?item.data.content.data.author.icon:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=849275536,3449568478&fm=27&gp=0.jpg'}}" mode="aspectFill"></image>
@@ -121,12 +134,15 @@ export default class tabContent extends wepy.page {
     for (var key in json.data.itemList) {
       //过滤了一下接口返回的信息
       if (json.data.itemList[key].type == 'followCard') {
+        //为数据增加一个属性，显示文本字数
         json.data.itemList[key].descriptionLen = me.methods.replaceText(
           json.data.itemList[key].data.content.data.description
         );
+        //为数据增加一个属性，实现控制video上的cover-view是否存在
+        json.data.itemList[key].showCoverImg = true;
         json.data.itemList[key].isShowText = false;
         me.contents.push(json.data.itemList[key]);
-        console.log(me.contents);
+        // console.log(me.contents);
       }
     }
     me.headers.img = me.contents[0].data.content.data.author.icon;
@@ -139,18 +155,21 @@ export default class tabContent extends wepy.page {
       //tab只有进行切换，就好先清空下面的list
       this.contents = [];
       this.isClassify = paramse.classify;
-      if (
-        selectedId !== 2 ||
-        selectedId !== 3 ||
-        selectedId !== 4 ||
-        selectedId !== 5
-      ) {
-        this.getContent(selectedId);
-      } else {
-        return;
-      }
+      this.getContent(selectedId);
+      // if (
+      //   selectedId !== 2 ||
+      //   selectedId !== 3 ||
+      //   selectedId !== 4 ||
+      //   selectedId !== 5
+      // ) {
+      // } else {
+      //   return;
+      // }
     },
     replaceText(str) {
+      //先过滤一下空格、英文单词，再过滤一下中文汉字
+      str = str.replace(/\s/g, '');
+      str = str.replace(/[a-zA-Z]+/gi, '*');
       return str.replace(/[\u4E00-\u6FA5]/g, '*').length;
     },
     textBtn(id) {
@@ -159,6 +178,16 @@ export default class tabContent extends wepy.page {
       for (var key in me.contents) {
         if (me.contents[key].data.header.id == id) {
           me.contents[key].isShowText = !me.contents[key].isShowText;
+        }
+      }
+    },
+    playVideo(id) {
+      let me = this;
+      for (var key in me.contents) {
+        if (me.contents[key].data.header.id == id) {
+          me.contents[key].showCoverImg = !me.contents[key].showCoverImg;
+          me.$apply();
+          console.log(me.contents[key].showCoverImg, me, '点击视频了');
         }
       }
     }

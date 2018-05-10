@@ -37,7 +37,7 @@
       </scroll-view>
     </block>
     <block wx:else>
-      <view>不是全部了,是{{tab2.list[tab2.selectedId-1]['title']}}</view>
+      <!-- <view>不是全部了,是{{tab2.list[tab2.selectedId-1]['title']}}</view> -->
       <tabContent></tabContent>
     </block>
   </view>
@@ -64,25 +64,25 @@ export default class Home extends wepy.page {
     tab2: {
       list: [
         { title: '全部分类', id: '1' },
-        { title: '游戏', id: '2' },
-        { title: '音乐', id: '3' },
+        { title: '时尚', id: '24' },
+        { title: '音乐', id: '20' },
+        { title: '运动', id: '18' },
         { title: '开胃', id: '4' },
-        { title: '旅行', id: '5' },
-        { title: '科普', id: '6' },
-        { title: '搞笑', id: '7' },
-        { title: '时尚', id: '8' },
-        { title: '运动', id: '9' },
+        { title: '预告', id: '8' },
+        { title: '旅行', id: '6' },
+        { title: '搞笑', id: '28' },
+        { title: '游戏', id: '30' },
         { title: '动画', id: '10' },
-        { title: '广告', id: '11' },
-        { title: '精选', id: '12' },
-        { title: '生活', id: '13' },
-        { title: '剧情', id: '14' },
-        { title: '预告', id: '15' },
-        { title: '集锦', id: '16' },
-        { title: '记录', id: '17' },
-        { title: '创意', id: '18' },
-        { title: '萌宠', id: '19' },
-        { title: '综艺', id: '20' }
+        { title: '广告', id: '14' },
+        // { title: '精选', id: '12' },
+        { title: '生活', id: '36' },
+        { title: '科普', id: '32' },
+        { title: '剧情', id: '12' },
+        { title: '集锦', id: '34' },
+        { title: '记录', id: '22' },
+        { title: '创意', id: '2' },
+        { title: '萌宠', id: '26' },
+        { title: '综艺', id: '38' }
       ],
       selectedId: '1',
       scroll: true,
