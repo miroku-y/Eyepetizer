@@ -129,7 +129,6 @@ export default class tabContent extends wepy.page {
         console.log(me.contents);
       }
     }
-    // console.log(me.contents, me.contents[0], '切换内容');
     me.headers.img = me.contents[0].data.content.data.author.icon;
     me.$apply();
   }
