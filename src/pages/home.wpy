@@ -104,7 +104,6 @@ export default class Home extends wepy.page {
       //切换tab
       this[componentId].selectedId = selectedId;
       this.selectedId = selectedId;
-      // console.log(this);
       //在home页面使用component
       console.log(selectedId, `准备跳转`);
       this.$invoke('tabContent', 'requestContent', {
