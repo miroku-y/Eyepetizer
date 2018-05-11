@@ -68,6 +68,7 @@ http://mp.weixin.qq.com/debug/wxadoc/dev/
 ![](https://github.com/yangdongMC/Eyepetizer/blob/master/src/assets/wechat14.png)
 ![](https://github.com/yangdongMC/Eyepetizer/blob/master/src/assets/wechat13.png)
 ![](https://github.com/yangdongMC/Eyepetizer/blob/master/src/assets/wechat11.png)
+![](https://github.com/yangdongMC/Eyepetizer/blob/master/src/assets/wechat15.png)
 
 ### 开发手记
 
