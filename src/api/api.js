@@ -14,7 +14,13 @@ const getContent = paramse =>
     'http://baobab.kaiyanapp.com/api/v5/index/tab/category/' +
       paramse.query.selectedId
   );
+
+//获取详情
+const getDetail = paramse =>
+  wxRequest(paramse, 'http://baobab.kaiyanapp.com/api/v2/video/' + paramse.id);
+
 module.exports = {
   allCatetory,
-  getContent
+  getContent,
+  getDetail
 };

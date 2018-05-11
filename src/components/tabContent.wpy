@@ -90,7 +90,8 @@
     </block>
     <view class="videoBox" wx:for="{{contents}}" wx:key="{{item.data.header.id}}" wx:for-item="item">
       <video class="video" controls objectFit="fill" autoplay="{{!item.showCoverImg}}" show-center-play-btn="{{false}}" custom-cache="{{false}}" src="{{item.data.content.data.playUrl?item.data.content.data.playUrl:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=849275536,3449568478&fm=27&gp=0.jpg'}}">
-        <cover-view class="controls" hidden="{{!item.showCoverImg}}" @tap='playVideo({{item.data.header.id}})'>
+        <!-- <cover-view class="controls" hidden="{{!item.showCoverImg}}" @tap='playVideo({{item.data.header.id}})'> -->
+        <cover-view class="controls" @tap="jumpDetail({{item.data.header.id}})">
             <cover-image class="imgcover" src="{{item.data.content.data.cover.homepage||item.data.content.data.cover.feed}}" mode="aspectFill"></cover-image>
         </cover-view>
       </video>
@@ -190,6 +191,13 @@ export default class tabContent extends wepy.page {
           console.log(me.contents[key].showCoverImg, me, '点击视频了');
         }
       }
+    },
+    jumpDetail(id) {
+      let me = this;
+      //不在模板里面用标签进行跳转，使用函数进行跳转
+      //计划是用wepy中的继承compent来实现跳转，但是没有实现
+      // me.$redirect('../pages/detail', { id: id });
+      wepy.navigateTo({ url: '../pages/detail?id=' + id });
     }
   };
 

@@ -1,0 +1,117 @@
+<style>
+.videoBox {
+  width: 100%;
+  margin: 0 auto;
+  height: 35vh;
+}
+.video {
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+}
+.main {
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 10px;
+}
+.titleText {
+  font-weight: bold;
+}
+.bgMain {
+  width: 100%;
+}
+.content {
+  height: 100%;
+  width: 100%;
+}
+.text_name,
+.text_description {
+  font-size: 11px;
+}
+.text_name {
+  margin: 5px 0;
+}
+.text_description {
+  text-align: left;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 20;
+  margin-bottom: 5px;
+}
+.tagsBox {
+  display: flex;
+  height: 20vh;
+  align-items: center;
+}
+.imgBox {
+  width: 40%;
+  height: 85%;
+}
+.leftImg {
+  width: 100%;
+  height: 100%;
+}
+.rightText {
+  margin-left: 2vw;
+  line-height: 6vh;
+}
+</style>
+<template>
+  <view class="content">
+    <view class="videoBox">
+      <video class="video" autoplay="{{true}}" objectFit="fill" src="{{infoSource.data.playUrl}}">
+        </video>
+    </view>
+    <view class="bgMain" style="background-image:url({{infoSource.data.cover.blurred}})">
+      <view class="main" >
+        <text class="titleText">{{infoSource.data.title}}</text>
+        <view class="text_name">
+          {{infoSource.data.author.name}} / #{{infoSource.data.category}}
+        </view>
+        <view class="text_description">
+          {{infoSource.data.description}}
+        </view>
+        <view class="tagsBox" wx:for="{{infoSource.data.tags}}" wx:key="{{item.id}}" wx:for-item="item">
+          <view class="imgBox">
+            <image class="leftImg" src="{{item.headerImage}}"></image>
+          </view>
+          <view class="rightText">
+            <view>
+              <text>#{{item.name}}</text>
+            </view>
+            <view>
+              <text>{{item.tagRecType}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import { getDetail } from '../api/api';
+export default class Detail extends wepy.page {
+  config = {
+    navigationBarTitleText: '详情'
+  };
+  data = {
+    infoSource: {}
+  };
+  async getInfo(id) {
+    let me = this;
+    const json = await getDetail({ id: id });
+    me.infoSource = json;
+    me.$apply();
+    console.log(me.infoSource, '来自列表页的参数');
+  }
+  methods = {};
+  onLoad(options) {
+    let me = this;
+    me.getInfo(options.id);
+    // http://baobab.kaiyanapp.com/api/v2/video/17631
+  }
+}
+</script>
