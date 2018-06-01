@@ -23,6 +23,7 @@ setStore(store);
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/canvas',
       'pages/home',
       'pages/my',
       'pages/index',
@@ -42,6 +43,10 @@ export default class extends wepy.app {
       backgroundColor: '#fff',
       borderStyle: 'black',
       list: [
+        {
+          text: 'canvas',
+          pagePath: 'pages/canvas'
+        },
         {
           text: '首页',
           pagePath: 'pages/home'

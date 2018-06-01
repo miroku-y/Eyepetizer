@@ -1,0 +1,69 @@
+<style>
+</style>
+
+<template>
+  <view>
+    <text>这是canvas</text>
+    <view id="chart" style="width:10rem;height:10rem;background:#eee">12%</view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class canvas extends wepy.page {
+  /*
+  *组件中的this,均指组件canvas
+  * */
+  config = {
+    navigationBarTitleTezt: 'canvas演示'
+  };
+  chart = () => {
+    let canvas = wepy.createCanvasContext('chart');
+    let ctx = canvas._context;
+    // console.log('调用了自定义方法中的a方法');
+    // 数据源
+    let source = [
+      7,
+      8,
+      6,
+      10,
+      8,
+      5,
+      7,
+      30,
+      1,
+      8,
+      5,
+      7,
+      5,
+      1,
+      8,
+      12,
+      52,
+      12,
+      49,
+      30,
+      12
+    ];
+    //画轴
+    let max = Math.max.apply(null, source);
+    let min = Math.min.apply(null, source);
+    //X
+    this.darwLine(0, 0, 300, 0, 0.5, '#999');
+    //Y
+    // this.darwLine();
+    // console.log(ctx);
+  };
+
+  //绘制轴的公共方法
+  darwLine = (b_x, b_y, e_x, e_y, width, color) => {
+    console.log(b_x, b_y, e_x, e_y, width, color);
+  };
+  onLoad() {
+    this.chart();
+    // console.warn(this);
+    // console.log('canvas页面加载', );
+  }
+}
+</script>
