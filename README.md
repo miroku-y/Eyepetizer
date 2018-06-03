@@ -87,4 +87,4 @@ http://mp.weixin.qq.com/debug/wxadoc/dev/
 
 5.增加了在 video 标签上显示指定图片的功能<br>
 
-6.增加了在 canvas 绘图<br>
+6.增加了在 项目中使用 canvas 绘图<br>
