@@ -91,7 +91,7 @@ import Group from '../components/group';
 import Toast from 'wepy-com-toast';
 import testMixin from '../mixins/test';
 
-console.log('Counter: ', Counter); // => moduleA ignored: {}
+//console.log('Counter: ', Counter); // => moduleA ignored: {}
 
 @connect({
   num(state) {

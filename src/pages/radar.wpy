@@ -1,0 +1,189 @@
+<style>
+.radar-canvas {
+  width: 100%;
+  height: 300px;
+}
+</style>
+<template>
+  <view>
+    <view>
+      <text>雷达图：</text>
+      <canvas class="radar-canvas" canvas-id="radar" disable-scroll="{{false}}"></canvas>
+    </view>
+    <view>
+      <Bar></Bar>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+//注意：组件引入时，路径必须放在components文件夹下，不然放在pages下，会找不到
+import bar from '../components/bar';
+/**
+  canvas常用属性
+  beginPath 起始一条路径，或重置当前路径
+  strokeStyle 设置或返回颜色、渐变或模式
+  lineTo 创建到达位置x,y的一条线
+  colsePath 创建从当前点回到起始点的路径
+  stroke 绘制已定义的路径
+  fillStyle 填充绘制的颜色
+  fill 填充当前绘图（颜色）
+ */
+
+//获取媒介宽度
+const windowW = wx.getSystemInfoSync().windowWidth;
+const centerPointX = windowW / 2;
+const centerPointY = centerPointX;
+const offset = 3.3;
+export default class Radar extends wepy.page {
+  config = {
+    navigationBarTitleText: 'charts'
+  };
+
+  components = {
+    Bar: bar
+  };
+  data = {
+    //建立雷达图需要的数据
+    radarData: [
+      { desc: 'React', value: '0.6' },
+      { desc: 'Angular', value: '0.5' },
+      { desc: 'Vue', value: '0.8' },
+      { desc: 'Wepy', value: '0.5' },
+      { desc: 'Canvas', value: '0.3' }
+    ],
+    //定义半径，减去的部分为文字留的空位
+    radius: centerPointX - this.rpx(200)
+  };
+
+  onLoad() {}
+
+  //wepy组件，只在page页面中存在的生命周期函数
+  onShow() {
+    const ctx = wx.createCanvasContext('radar');
+    const sideNum = this.radarData.length;
+    //定义角度
+    const angle = Math.PI * 2 / sideNum;
+    this.drawPolygon(ctx, sideNum, angle);
+    this.drawRib(ctx, sideNum, angle);
+    this.addTags(ctx, this.radarData, sideNum, angle);
+    this.addDataPoint(ctx, this.radarData, sideNum, angle);
+    this.linePoint(ctx, this.radarData, sideNum, angle);
+    ctx.draw();
+  }
+
+  //draw polygon 绘制多边形
+  drawPolygon(ctx, sideNum, angle) {
+    ctx.setStrokeStyle('rgba(83,139,81)');
+    //获取单位半径
+    const r = this.radius / 5;
+    for (let i = 0; i < 5; i++) {
+      ctx.beginPath();
+      //当前半径
+      let currentR = r * (i + 1);
+      for (let j = 0; j < sideNum; j++) {
+        //Math.PI/3.3是为了设置偏移量，可以自行设置
+        const x =
+          centerPointX + currentR * Math.cos(angle * j + Math.PI / offset);
+        const y =
+          centerPointY + currentR * Math.sin(angle * j + Math.PI / offset);
+        ctx.lineTo(x, y);
+      }
+      ctx.setLineDash([2, 2]); //虚线
+      ctx.closePath();
+      ctx.stroke();
+    }
+  }
+
+  //line point
+  linePoint(ctx, radarData, sideNum, angle) {
+    ctx.setStrokeStyle('rgba(83,139,81)');
+    ctx.beginPath();
+    for (let i = 0; i < sideNum; i++) {
+      const x =
+        centerPointX +
+        this.radius *
+          Math.cos(angle * i + Math.PI / offset) *
+          radarData[i].value;
+      const y =
+        centerPointY +
+        this.radius *
+          Math.sin(angle * i + Math.PI / offset) *
+          radarData[i].value;
+
+      ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.setFillStyle('rgba(0,91,51,0.2)');
+    ctx.fill();
+    ctx.stroke();
+  }
+
+  //add  dataPoint
+  addDataPoint(ctx, radarData, sideNum, angle) {
+    for (var i = 0; i < sideNum; i++) {
+      var x =
+        centerPointX +
+        this.radius * Math.cos(angle * i + Math.PI / 3.3) * radarData[i].value;
+      var y =
+        centerPointY +
+        this.radius * Math.sin(angle * i + Math.PI / 3.3) * radarData[i].value;
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, 2 * Math.PI);
+      ctx.setFillStyle('rgb(0, 91, 51)');
+      ctx.fill();
+      ctx.closePath();
+    }
+  }
+
+  addTags(ctx, radarData, sideNum, angle) {
+    ctx.setFontSize(this.rpx(30));
+    ctx.setFillStyle('rgb(95, 153, 32)');
+    //确定文本位置，可以根据微信小程序文档中的具体方法来设置
+    for (var i = 0; i < sideNum; i++) {
+      var x = parseInt(
+        centerPointX + this.radius * Math.cos(angle * i + Math.PI / 3.3)
+      );
+      var y = parseInt(
+        centerPointY + this.radius * Math.sin(angle * i + Math.PI / 3.3)
+      );
+      var center = parseInt(centerPointX);
+      var centerY = parseInt(centerPointY);
+      // console.log('x' + x, 'y' + y, 'center' + center, 'centerY' + centerY);
+      if (x < center && y < centerY) {
+        ctx.setTextAlign('left');
+        ctx.fillText(radarData[i].desc, x - this.rpx(120), y);
+      } else if (x - this.rpx(20) > center && y < centerY) {
+        ctx.setTextAlign('right');
+        ctx.fillText(radarData[i].desc, x + this.rpx(120), y);
+      } else if (y > centerY) {
+        ctx.setTextAlign('center');
+        ctx.fillText(radarData[i].desc, x, y + this.rpx(80));
+      } else {
+        ctx.setTextAlign('center');
+        ctx.fillText(radarData[i].desc, x, y - this.rpx(40));
+      }
+    }
+  }
+
+  //draw rib
+  drawRib(ctx, sideNum, angle) {
+    ctx.setStrokeStyle('#cdcdcd');
+    ctx.beginPath();
+    for (var i = 0; i < sideNum; i++) {
+      var x = centerPointX + this.radius * Math.cos(angle * i + Math.PI / 3.3);
+      var y = centerPointY + this.radius * Math.sin(angle * i + Math.PI / 3.3);
+      ctx.moveTo(centerPointX, centerPointY);
+      ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.stroke();
+  }
+
+  //定义公共返回方法
+  rpx(num) {
+    return Number(Number(windowW / 750 * num).toFixed(2));
+  }
+}
+</script>

@@ -1,0 +1,117 @@
+<style>
+.bar-canvas {
+  width: 100%;
+  height: 500px;
+}
+</style>
+
+<template>
+  <view>
+    <text>柱状图</text>
+    <view>
+      <canvas class="bar-canvas" canvas-id="bar"></canvas>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+/**
+  可以参考原生绘制https://www.cnblogs.com/linxin/p/6892389.html
+ */
+//获取媒介的宽
+const windowW = wx.getSystemInfoSync().windowWidth;
+export default class bar extends wepy.page {
+  config = {
+    navigationBarTitleText: 'bar'
+  };
+  onLoad() {
+    //这里就不能放在onShow中进行初始化了，因为onShow只渲染当前page页面中存在的生命周期函数，而本组件是被当做子组件显示，所以它自己没有对应的可视化page页面，而是借助父页面显示
+    const ctx = wx.createCanvasContext('bar');
+
+    //定义数据源
+    const source = [
+      { city: '北京', number: 345, color: 'red' },
+      { city: '上海', number: 645, color: 'green' },
+      { city: '广州', number: 545, color: 'pink' },
+      { city: '深圳', number: 945, color: 'purple' }
+    ];
+    //定义轴线配置
+    const x = 50,
+      y = 250; //原点坐标
+    const xWidth = 30;
+    const yWidth = 20;
+    //定义矩形配置
+    const rectX = 0;
+    const rectY = 0;
+    const rectWidth = 30;
+    const rectHeight = 20;
+
+    //逐步调用绘制方法
+    this.darwAxis(ctx, x, y);
+    this.darwRect(ctx, source, xWidth, yWidth);
+    this.darwScale(ctx, source, yWidth);
+
+    ctx.draw();
+  }
+
+  //绘制坐标轴
+  darwAxis(ctx, x, y) {
+    console.log(ctx);
+    ctx.setStrokeStyle('orange');
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.beginPath();
+
+    //X
+    ctx.moveTo(0, 0);
+    ctx.lineTo(windowW - 90, 0);
+    ctx.lineTo(windowW - 90 - 10, -10);
+    ctx.moveTo(windowW - 90, 0);
+    ctx.lineTo(windowW - 90 - 10, 10);
+
+    //Y
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, -20 * 11);
+    ctx.lineTo(-10, -20 * 11 + 10);
+    ctx.moveTo(0, -20 * 11);
+    ctx.lineTo(10, -20 * 11 + 10);
+
+    ctx.stroke();
+  }
+
+  //绘制矩形
+  darwRect(ctx, source, xWidth, yWidth) {
+    ctx.beginPath();
+    ctx.setTextAlign('center');
+    ctx.setTextBaseline('top');
+    ctx.setFontSize('15');
+    for (let i = 0; i < source.length; i++) {
+      let item = source[i];
+      console.log(item);
+      ctx.setFillStyle(item.color);
+      ctx.fillRect(
+        i * 2 * xWidth + xWidth - 20,
+        -item.number / 100 * yWidth,
+        (windowW - 90) / 9,
+        item.number / 100 * yWidth
+      );
+      ctx.fillText(item.city, -20 + i * 2 * xWidth + xWidth + xWidth / 2, 10);
+    }
+  }
+
+  //绘制刻度
+  darwScale(ctx, source, yWidth) {
+    ctx.setTextAlign('end');
+    ctx.setTextBaseline('middle');
+    for (let i = 0; i <= 10; i++) {
+      ctx.moveTo(0, -i * yWidth);
+      ctx.lineTo(10, -i * yWidth);
+      ctx.fillText(i * 100, -10, -i * yWidth);
+    }
+    ctx.setStrokeStyle('orange');
+    ctx.stroke();
+  }
+}
+</script>
