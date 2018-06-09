@@ -23,13 +23,13 @@ setStore(store);
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/canvas',
+      'pages/css3',
+      'pages/radar',
       'pages/home',
       'pages/my',
       'pages/index',
       'pages/detail',
-      'pages/classify',
-      'pages/bar'
+      'pages/classify'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -45,8 +45,12 @@ export default class extends wepy.app {
       borderStyle: 'black',
       list: [
         {
+          text: 'CSS3',
+          pagePath: 'pages/css3'
+        },
+        {
           text: 'canvas',
-          pagePath: 'pages/canvas'
+          pagePath: 'pages/radar'
         },
         {
           text: '首页',
