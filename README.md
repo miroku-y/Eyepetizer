@@ -70,20 +70,21 @@ http://mp.weixin.qq.com/debug/wxadoc/dev/
 ![](https://github.com/yangdongMC/Eyepetizer/blob/master/src/assets/wechat13.png)
 ![](https://github.com/yangdongMC/Eyepetizer/blob/master/src/assets/wechat11.png)
 ![](https://github.com/yangdongMC/Eyepetizer/blob/master/src/assets/wechat15.png)
+![](https://github.com/yangdongMC/Eyepetizer/blob/master/src/assets/charts.png)
 
 ### 开发手记
 
 首先，此 demo 为 wepy 框架练习手册，抱歉没有深入下去，项目间隙，花了点时间效仿了一下，<br>
   在这里要感谢 Eyepetizer 提供的外放 API,让我可以抓到真实数据<br>
 
-1.同时打开两个文档 wepy,小程序，摸索式进行，滑动 tab 组件查看 zanUI 源码实现<br> 
+1.同时打开两个文档 wepy,小程序，摸索式进行，滑动 tab 组件查看 zanUI 源码实现<br>
 
-2.在调用接口时，看到了请求成功，但是 console 出来的数据一直是为 undefined，调试了好久，最后在 wepy 中的常见问题发现需要安装和引用 promise-polyfill<br> 
+2.在调用接口时，看到了请求成功，但是 console 出来的数据一直是为 undefined，调试了好久，最后在 wepy 中的常见问题发现需要安装和引用 promise-polyfill<br>
 
-3.组件化，抽出了 tabContent,达到了复用效果，参考了开眼视频的小程序，全部分类下，单个分类跳转的和 tab 切换跳转的页面，只是在 header 处有点不一样，于是 tabContent 诞生了，但 tabContent 不是一个纯组件，它是有状态的，在组件调用后进行请求获取内容，不是父组件传值而进行渲染<br> 
+3.组件化，抽出了 tabContent,达到了复用效果，参考了开眼视频的小程序，全部分类下，单个分类跳转的和 tab 切换跳转的页面，只是在 header 处有点不一样，于是 tabContent 诞生了，但 tabContent 不是一个纯组件，它是有状态的，在组件调用后进行请求获取内容，不是父组件传值而进行渲染<br>
 
-4.像这样的抽离，就会衍生一系列的问题，组件中如何调用其他组件内的方法--$invoke，当然还有不同场景的不同方法；组件之间的通信，无论是方法间参数通信，还是 url 路径上参数通信<br> 
+4.像这样的抽离，就会衍生一系列的问题，组件中如何调用其他组件内的方法--$invoke，当然还有不同场景的不同方法；组件之间的通信，无论是方法间参数通信，还是 url 路径上参数通信<br>
 
-5.增加了在video标签上显示指定图片的功能<br>
+5.增加了在 video 标签上显示指定图片的功能<br>
 
-
+6.增加了在 项目中使用 canvas 绘图<br>
