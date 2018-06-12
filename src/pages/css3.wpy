@@ -1,17 +1,56 @@
 <style>
-.long_img {
-  height: 7001px;
-  width: 100%;
+.world_cup_imgs {
+  position: relative;
 }
-.img {
-  width: 100%;
+.header {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  align-items: center;
+  left: 5%;
+  margin-top: 5%;
+}
+.header_left {
+  width: 30vh;
+  height: 10vh;
+}
+.header_right {
+  width: 12vh;
+  height: 12vh;
+}
+.bg {
+  position: absolute;
+}
+.bg > image {
+  vertical-align: top;
+}
+.float_icon {
+  position: fixed;
+  width: 12vh;
+  height: 10vh;
+  top: 70%;
+  left: 5%;
+}
+.float_icon > image {
   height: 100%;
+  width: 100%;
 }
 </style>
 
 <template>
-  <view class="long_img">
-    <image src="../assets/long_img.jpg" class="img" ></image>
+  <view class="world_cup_imgs">
+    <view class="bg">
+      <image src="https://cdn.chantrans.com/wxapp/vivoworldcup/bg-6.jpg"  mode="widthFix"></image>
+    </view>
+    <view class="header">
+        <image class="header_left" src="https://cdn.chantrans.com/wxapp/vivoworldcup/logo.png" mode="widthFix"></image>
+        <image class="header_right" src="https://cdn.chantrans.com/wxapp/vivoworldcup/rule.png" mode="widthFix"></image>
+    </view>
+    <!--固定查看图片-->
+    <view class="float_icon" wx:if="{{visible.floatIcon}}" @tap="handleFloatImg">
+      <image src="https://cdn.chantrans.com/wxapp/vivoworldcup/float-icon.png"></image>
+    </view>
   </view>
 </template>
 
@@ -23,8 +62,25 @@ export default class css3 extends wepy.page {
     navigationBarTitleText: 'css3动画'
   };
 
-  onLoad() {
-    console.log('加载css3');
+  data = {
+    visible: {
+      floatIcon: true
+    }
+  };
+  methods = {
+    handleFloatImg: function() {
+      console.log('可以操作需要图片框了');
+    }
+  };
+
+  onLoad() {}
+  onPageScroll(obj) {
+    if (obj.scrollTop > 1500) {
+      this.visible.floatIcon = false;
+    } else {
+      this.visible.floatIcon = true;
+    }
+    this.$apply();
   }
 }
 </script>
