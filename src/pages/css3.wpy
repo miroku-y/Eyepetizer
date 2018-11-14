@@ -41,15 +41,15 @@
 <template>
   <view class="world_cup_imgs">
     <view class="bg">
-      <image src="https://cdn.chantrans.com/wxapp/vivoworldcup/bg-6.jpg"  mode="widthFix"></image>
+      <image src="https://*****/bg-6.jpg"  mode="widthFix"></image>
     </view>
     <view class="header">
-        <image class="header_left" src="https://cdn.chantrans.com/wxapp/vivoworldcup/logo.png" mode="widthFix"></image>
-        <image class="header_right" src="https://cdn.chantrans.com/wxapp/vivoworldcup/rule.png" mode="widthFix"></image>
+        <image class="header_left" src="https://****/logo.png" mode="widthFix"></image>
+        <image class="header_right" src="https://****/rule.png" mode="widthFix"></image>
     </view>
     <!--固定查看图片-->
     <view class="float_icon" wx:if="{{visible.floatIcon}}" @tap="handleFloatImg">
-      <image src="https://cdn.chantrans.com/wxapp/vivoworldcup/float-icon.png"></image>
+      <image src="https://*****/float-icon.png"></image>
     </view>
   </view>
 </template>
